@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    uses: aumos-ai/.github/.github/workflows/ci-typescript.yml@main
+    with:
+      node-version: '20'
+      package-name: mcp-server-trust-gate
+
+  # Fire line scan — runs in addition to the reusable workflow
+  fire-line-scan:
+    name: Patent Gate Scan (P0-01)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan for forbidden identifiers
+        run: |
+          FORBIDDEN=(
+            "progressLevel"
+            "promoteLevel"
+            "computeTrustScore"
+            "behavioralScore"
+            "adaptiveBudget"
+            "optimizeBudget"
+            "predictSpending"
+            "detectAnomaly"
+            "generateCounterfactual"
+            "PersonalWorldModel"
+            "MissionAlignment"
+            "SocialTrust"
+            "CognitiveLoop"
+            "AttentionFilter"
+            "GOVERNANCE_PIPELINE"
+          )
+
+          FAILED=0
+          for TERM in "${FORBIDDEN[@]}"; do
+            MATCHES=$(grep -rn --include="*.ts" "$TERM" src/ || true)
+            if [ -n "$MATCHES" ]; then
+              echo "::error::Forbidden identifier found: $TERM"
+              echo "$MATCHES"
+              FAILED=1
+            fi
+          done
+
+          if [ "$FAILED" -eq 1 ]; then
+            echo "::error::Fire line violation detected. See FIRE_LINE.md."
+            exit 1
+          fi
+
+          echo "Fire line scan passed — no forbidden identifiers found."
