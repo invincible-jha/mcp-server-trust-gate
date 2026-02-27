@@ -39,3 +39,29 @@ export type {
   GateDecision,
   AuditEntry,
 } from './types.js';
+
+// Security scanner
+export { runScan, formatScanReport } from './scanner.js';
+export type { ScanResult, ScanSummary } from './scanner.js';
+export { SCAN_RULES } from './scanner-rules.js';
+export type {
+  ScanRule,
+  ScanFinding,
+  McpServerConfig,
+  AuthConfig,
+  ToolConfig,
+  ServerInfo,
+  SeverityLevel,
+} from './scanner-rules.js';
+
+// Rate limiting
+export { TokenBucketRateLimiter, RateLimitConfig } from './rate-limiter.js';
+export type { RateLimitResult } from './rate-limiter.js';
+
+// Circuit breaker
+export { CircuitBreaker, CircuitBreakerConfig } from './circuit-breaker.js';
+export type { CircuitBreakerStatus } from './circuit-breaker.js';
+
+// Tool policy engine
+export { evaluateToolPolicy, ToolPolicy, ToolPolicyConfig } from './tool-policy.js';
+export type { ToolPolicyResult } from './tool-policy.js';

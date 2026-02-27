@@ -13,9 +13,12 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "bin": {
+    "mcp-trust-gate": "./dist/cli.js"
+  },
   "files": ["dist"],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "build": "tsup src/index.ts src/cli.ts --format cjs,esm --dts",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
   },

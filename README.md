@@ -3,6 +3,7 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![npm](https://img.shields.io/npm/v/@aumos/mcp-trust-gate)](https://www.npmjs.com/package/@aumos/mcp-trust-gate)
 [![Patent Gate: P0-01 ATP](https://img.shields.io/badge/Patent%20Gate-P0--01%20ATP-orange)](./FIRE_LINE.md)
+[![Governance Score](https://img.shields.io/badge/governance-self--assessed-blue)](https://github.com/aumos-ai/mcp-server-trust-gate)
 
 MCP middleware for trust-based governance of AI agent tool calls.
 
