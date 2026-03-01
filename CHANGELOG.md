@@ -11,6 +11,17 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [0.1.1] — 2026-02-28
+
+### Security
+
+- Replaced the 32-bit Bernstein-style integer fold in `AuditLogger.computeHash`
+  with SHA-256 via Node.js `crypto.createHash`. The hash chain now produces
+  64-character hex digests, making the tamper-evidence mechanism suitable for
+  both development and production deployments.
+
+---
+
 ## [0.1.0] — 2026-02-26
 
 ### Added

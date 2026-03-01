@@ -232,6 +232,24 @@ export class TrustGate {
   }
 
   /**
+   * Evaluate whether a tool call should be permitted (async version).
+   *
+   * @remarks
+   * Identical to {@link evaluate} but returns a Promise, enabling
+   * integration with async storage backends and middleware hooks.
+   * Use this variant when your pipeline includes async components
+   * such as remote trust resolution, async audit persistence, or
+   * network-backed budget tracking.
+   *
+   * @param toolName - The MCP tool name being invoked.
+   * @param estimatedCost - Optional estimated cost of the call.
+   * @returns A Promise resolving to a {@link GateDecision}.
+   */
+  async evaluateAsync(toolName: string, estimatedCost?: number): Promise<GateDecision> {
+    return this.evaluate(toolName, estimatedCost);
+  }
+
+  /**
    * Manually assign the agent's trust level.
    *
    * @remarks

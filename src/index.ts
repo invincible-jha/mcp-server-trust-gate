@@ -65,3 +65,16 @@ export type { CircuitBreakerStatus } from './circuit-breaker.js';
 // Tool policy engine
 export { evaluateToolPolicy, ToolPolicy, ToolPolicyConfig } from './tool-policy.js';
 export type { ToolPolicyResult } from './tool-policy.js';
+
+// Output filtering (post-action gate)
+export { OutputFilter } from './output-filter.js';
+export type {
+  OutputFilterRule,
+  OutputFilterAction,
+  OutputFilterResult,
+  OutputFilterConfig,
+} from './output-filter.js';
+
+// OpenTelemetry instrumentation
+export { TrustGateTracer } from './otel-exporter.js';
+export type { OTelSpanLike, OTelTracerLike, TrustGateOTelConfig } from './otel-exporter.js';

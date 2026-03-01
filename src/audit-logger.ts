@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 MuVeraAI Corporation
 
+import { createHash } from 'crypto';
 import type { GateDecision, AuditEntry } from './types.js';
 
 /**
@@ -17,9 +18,8 @@ import type { GateDecision, AuditEntry } from './types.js';
  * - Cross-session log correlation
  *
  * Hash chain integrity can be verified offline via {@link verifyChain}.
- * The hash algorithm used here is a fast 32-bit integer fold suitable for
- * tamper-evidence in development contexts. Production deployments should
- * replace {@link computeHash} with `crypto.subtle.digest`.
+ * The hash algorithm is SHA-256 via Node.js `crypto.createHash`, providing
+ * tamper-evidence suitable for both development and production deployments.
  *
  * @example
  * ```typescript
@@ -115,24 +115,15 @@ export class AuditLogger {
    * Compute a deterministic hash string over a decision and its predecessor hash.
    *
    * @remarks
-   * Uses a simple 32-bit Bernstein-style integer fold for speed. This is
-   * sufficient for tamper-evidence in development but should be replaced with
-   * `crypto.subtle.digest('SHA-256', ...)` in production deployments.
+   * Uses Node.js `crypto.createHash('sha256')` to produce a tamper-evident
+   * 64-character hex digest suitable for production audit chains.
    *
    * @param decision - The gate decision to hash.
    * @param previousHash - The hash of the preceding entry (or `'0'`).
-   * @returns An 8-character lowercase hex string.
+   * @returns A 64-character lowercase hex string (SHA-256 digest).
    */
   private computeHash(decision: GateDecision, previousHash: string): string {
     const data = JSON.stringify({ decision, previousHash });
-    let hash = 0;
-
-    for (let index = 0; index < data.length; index++) {
-      const charCode = data.charCodeAt(index);
-      hash = ((hash << 5) - hash) + charCode;
-      hash = hash & hash; // Coerce to signed 32-bit integer
-    }
-
-    return Math.abs(hash).toString(16).padStart(8, '0');
+    return createHash('sha256').update(data).digest('hex');
   }
 }
